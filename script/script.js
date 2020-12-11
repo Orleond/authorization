@@ -1,99 +1,44 @@
 'use strict';
 
-const username = document.querySelector('#username'),
-    registrUser = document.querySelector('#registrUser'),
-    login = document.querySelector('#login'),
-    list = document.querySelector('#list'),
-    monthes = [' января ', ' февраля ', ' марта ', ' апреля ', ' мая ', ' июня ',
-        ' июля ', ' августа ', ' сентября ', ' октября ', ' ноября ', ' декабря '
-    ];
+const color = document.getElementById('color'),
+    change = document.getElementById('change');
 
-let usersList = [],
-    json = JSON.stringify(usersList);
-if (localStorage.getItem('key')) {
-    usersList = JSON.parse(localStorage.getItem('key'));
+function start() {
+    document.body.style.backgroundColor = color.textContent;
+    change.style.color = color.textContent;
 }
-const program = function() {
-    list.textContent = '';
-    let usersList2 = usersList.filter(element => element !== null);
-    usersList = usersList2;
-    usersList.forEach(function(item) {
-        const li = document.createElement('li');
 
-        li.innerHTML = 'Имя: ' + item.name + ', фамилия: ' + item.lastName + ', зарегистрирован ' +
-            item.regDate + '&nbsp <a href="#" id="delete">[удалить]</a>';
-
-        list.append(li);
-
-        const remove = li.querySelector('#delete');
-        remove.addEventListener('click', function() {
-            const val = item;
-            for (let i in usersList) {
-                if (val === usersList[i]) {
-                    delete usersList[i];
-                }
-            }
-            program();
-        });
-    });
-    json = JSON.stringify(usersList);
-    localStorage.setItem('key', json);
-};
-registrUser.addEventListener('click', function() {
-    let nameAndLastName,
-        name,
-        lastName,
-        checkSpace = 0,
-        checkName = function(a) {
-            checkSpace = 0;
-            nameAndLastName = prompt(a);
-            for (let item of nameAndLastName.trim()) {
-                if (item === ' ') {
-                    checkSpace++;
-                }
-            }
-            if (checkSpace !== 1) {
-                checkName('Ошибка ввода! Введите имя и фамилию через пробел.');
-            }
-            nameAndLastName = nameAndLastName.split(' ');
-            name = nameAndLastName[0];
-            lastName = nameAndLastName[1];
-        };
-    checkName('Введите имя и фамилию через пробел.');
-    let login = prompt('Введите логин'),
-        pass = prompt('Введите пароль');
-    let today = new Date();
-    let newUser = {
-        name: name,
-        lastName: lastName,
-        login: login,
-        pass: pass,
-        regDate: today.getDay() + monthes[today.getMonth()] + today.getFullYear() + 'г., ' +
-            today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
-    };
-    usersList.push(newUser);
-    program();
-
-});
-
-login.addEventListener('click', function() {
-    let log = prompt('Введите логин'),
-        n = -1;
-    usersList.forEach(function(item) {
-        if (item.login === log) {
-            n = item;
-            let password = prompt('Введите пароль');
-            if (password === item.pass) {
-                username.textContent = item.login;
-            } else {
-                alert('Неверный пароль');
-            }
+change.addEventListener('click', function() {
+    let num,
+        num16 = [],
+        num16end;
+    for (let i = 0; i < 6; i++) {
+        num = Math.floor(Math.random() * 15);
+        switch (num) {
+            case 10:
+                num = 'a';
+                break;
+            case 11:
+                num = 'b';
+                break;
+            case 12:
+                num = 'c';
+                break;
+            case 13:
+                num = 'd';
+                break;
+            case 14:
+                num = 'e';
+                break;
+            case 15:
+                num = 'f';
+                break;
         }
-    });
-    if (n === -1) {
-        alert('Пользователь не найден');
+        num16[i] = num;
     }
-
+    num16end = '#' + num16.join('');
+    color.textContent = num16end;
+    start();
 });
 
-program();
+start();

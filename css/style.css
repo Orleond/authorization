@@ -2,3 +2,12 @@ a {
     text-decoration: none;
     color: blue;
 }
+
+#color {
+    color: #fff;
+}
+
+#change {
+    background-color: #fff;
+    border: 1px solid #000;
+}
